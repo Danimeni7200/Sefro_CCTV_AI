@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # AI Service - Python FastAPI application for local LPR inference
+  ai_service:
+    build:
+      context: ./packages/ai_service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - CONFIDENCE_THRESHOLD=0.7
+      - CLOUD_API_URL=http://cloud_api:9000
+      - CLOUD_SYNC_ENABLED=false
+    volumes:
+      - ./packages/ai_service/logs:/app/logs
+    networks:
+      - cctv-network
+
+  # Cloud API - Python FastAPI backend for cloud services
+  cloud_api:
+    build:
+      context: ./packages/cloud_api
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    environment:
+      - JWT_SECRET=dev_secret_change
+      - DATABASE_URL=sqlite:///./cloud_lpr.db
+    volumes:
+      - ./packages/cloud_api/cloud_lpr.db:/app/cloud_lpr.db
+    networks:
+      - cctv-network
+
+  # Cloud Web - Next.js frontend for cloud dashboard
+  cloud_web:
+    build:
+      context: ./packages/cloud_web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - cloud_api
+    networks:
+      - cctv-network
+
+  # Local C++ Client - C++ application for video processing (simplified version)
+  local_cpp:
+    build:
+      context: ./packages/local_cpp
+      dockerfile: Dockerfile
+    environment:
+      - STREAM_URL=rtsp://admin:admin@192.168.1.100:554/stream1
+    volumes:
+      - ./packages/local_cpp/logs:/app/logs
+      - ./packages/local_cpp/config.json:/app/config.json
+    networks:
+      - cctv-network
+    # Only start this service when needed as it requires significant resources
+    profiles:
+      - full
+
+networks:
+  cctv-network:
+    driver: bridge

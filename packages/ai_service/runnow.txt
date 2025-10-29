@@ -1,0 +1,49 @@
+# How to run all applications in the LPR system:
+
+# 1. AI Service (Python FastAPI) - Required for LPR processing
+# PowerShell Command: cd packages/ai_service; pip install -r requirements.txt; uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+# URL: http://127.0.0.1:8000
+# This provides /infer endpoint for license plate recognition
+
+# 2. Cloud API (Python FastAPI) - Optional for cloud analytics
+# PowerShell Command: cd packages/cloud_api; pip install -r requirements.txt; uvicorn main:app --host 0.0.0.0 --port 9000 --reload
+# URL: http://127.0.0.1:9000
+# This provides JWT authentication and analytics endpoints
+
+# 3. Cloud Web (Next.js) - Optional web dashboard
+# PowerShell Command: cd packages/cloud_web; npm install; npm run dev
+# URL: http://localhost:3000
+# This provides Farsi RTL web interface for analytics
+
+# 4. Local C++ Client - Edge processing pipeline
+# PowerShell Command: cd packages/local_cpp; cmake -B build -S .; cmake --build build --config Release; .\build\Release\local_cpp_client.exe
+# Health: http://127.0.0.1:8085/healthz
+# This captures camera stream, processes frames, and sends to AI service
+
+# 5. Electron App - Desktop monitoring interface
+# PowerShell Command: cd packages/electron_app; npm install; npm start
+# This provides desktop UI for monitoring LPR results and RTSP discovery
+
+# MINIMUM REQUIRED TO RUN:
+# - AI Service (port 8000) - for LPR processing
+# - Local C++ Client - for camera capture and processing
+# - Electron App - for monitoring (optional, can use curl instead)
+
+# FULL SYSTEM (with cloud analytics):
+# - AI Service (port 8000)
+# - Cloud API (port 9000) 
+# - Cloud Web (port 3000)
+# - Local C++ Client
+# - Electron App
+
+# USAGE FLOW:
+# 1. Start AI Service first
+# 2. Configure camera IP/credentials in packages/local_cpp/config.json
+# 3. Start C++ client to begin processing
+# 4. Use Electron app to monitor results and discover RTSP streams
+# 5. Optionally start Cloud API + Web for advanced analytics
+
+# RTSP DISCOVERY:
+# Use Electron app → enter camera IP, username, password, brand (e.g., "reolink")
+# Click "کشف" → get RTSP candidates → update config.json → restart C++ client
+

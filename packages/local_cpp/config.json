@@ -1,0 +1,49 @@
+{
+  "ai_service": {
+    "host": "http://127.0.0.1:8000",
+    "retry_count": 3,
+    "retry_delay_ms": 2000,
+    "timeout_ms": 10000,
+    "camera_id": "test_cam"
+  },
+  "health": {
+    "bind_address": "127.0.0.1",
+    "enabled": true,
+    "port": 8086
+  },
+  "logging": {
+    "console_output": true,
+    "file": "logs/cpp_client.log",
+    "level": "DEBUG",
+    "rotate_daily": true
+  },
+  "pipeline": {
+    "drop_policy": "drop_oldest",
+    "frame_queue_size": 10,
+    "inference_queue_size": 5,
+    "max_inference_queue": 8,
+    "queue_size": 16
+  },
+  "preprocessing": {
+    "denoise": true,
+    "gamma": 1.0,
+    "letterbox": true,
+    "quality_threshold": 0.2,
+    "sharpen": true,
+    "target_height": 720,
+    "target_width": 1280
+  },
+  "privacy": {
+    "anonymize": false,
+    "mask_plate_on_storage": false,
+    "store_original_image": true
+  },
+  "stream": {
+    "camera_id": "CAM01",
+    "fps_cap": 10,
+    "max_reconnect_attempts": 5,
+    "reconnect_delay_ms": 2000,
+    "url": "rtsp://admin:test1234@192.168.4.252:554/h264Preview_01_sub",
+    "use_hardware_decode": false
+  }
+}

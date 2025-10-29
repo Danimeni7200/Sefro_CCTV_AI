@@ -1,0 +1,77 @@
+================================================================================
+                         DO THIS NOW - CLEAN REBUILD
+================================================================================
+
+The CMake cache is corrupted. We need to clean and rebuild from scratch.
+
+STEP 1: Open PowerShell
+  - Press Win + X
+  - Select "Windows PowerShell" or "Terminal"
+
+STEP 2: Run this command
+  cd c:\Users\Dani\Desktop\license_plate\packages\local_cpp
+
+STEP 3: Run the clean rebuild script
+  .\clean_rebuild.ps1
+
+STEP 4: Wait for build to complete (3-6 minutes)
+  You should see:
+    "Clean Build Complete!"
+    "Executable verified: Release\local_cpp_client.exe"
+
+STEP 5: Run the client
+  .\Release\local_cpp_client.exe
+
+STEP 6: Look for success in console output
+  ✅ SUCCESS - You should see:
+    [StreamReader] Successfully opened stream with backend: FFMPEG
+    [StreamReader] Stream properties - FPS: 30, Resolution: 1920x1080
+    Stats - FPS: 15.00, Processed: 15, Dropped: 0
+
+================================================================================
+                         IF POWERSHELL SCRIPT WON'T RUN
+================================================================================
+
+Run this first:
+  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+
+Then run:
+  .\clean_rebuild.ps1
+
+================================================================================
+                         IF YOU PREFER CMD
+================================================================================
+
+Instead of PowerShell, use:
+  clean_rebuild.cmd
+
+================================================================================
+                         WHAT THIS DOES
+================================================================================
+
+1. Removes the old build_full directory (which has corrupted CMake cache)
+2. Creates a fresh build_full directory
+3. Runs CMake to configure the build
+4. Compiles the C++ code
+5. Creates a new executable
+
+This fixes the "target already exists" error.
+
+================================================================================
+                         VERIFICATION (OPTIONAL)
+================================================================================
+
+In another PowerShell window, run:
+  curl http://127.0.0.1:8085/status
+
+Should show:
+  "stream_connected": true
+  "fps": 15.0
+
+================================================================================
+                         NEED HELP?
+================================================================================
+
+See: CLEAN_REBUILD_GUIDE.md for detailed instructions
+
+================================================================================

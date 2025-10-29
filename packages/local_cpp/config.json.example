@@ -1,0 +1,46 @@
+{
+  "stream": {
+    "url": "rtsp://admin:admin@192.168.1.100:554/stream1",
+    "camera_id": "CAM01",
+    "fps_cap": 15,
+    "reconnect_delay_ms": 1000,
+    "max_reconnect_attempts": -1,
+    "use_hardware_decode": true
+  },
+  "ai_service": {
+    "host": "http://127.0.0.1:8000",
+    "timeout_ms": 5000,
+    "retry_count": 3,
+    "retry_delay_ms": 1000
+  },
+  "pipeline": {
+    "queue_size": 32,
+    "drop_policy": "drop_oldest",
+    "max_inference_queue": 16
+  },
+  "preprocessing": {
+    "target_width": 1280,
+    "target_height": 720,
+    "letterbox": true,
+    "gamma": 1.0,
+    "denoise": false,
+    "sharpen": false,
+    "quality_threshold": 0.3
+  },
+  "privacy": {
+    "mask_plate_on_storage": false,
+    "anonymize": false,
+    "store_original_image": true
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/cpp_client.log",
+    "rotate_daily": true,
+    "console_output": true
+  },
+  "health": {
+    "port": 8085,
+    "bind_address": "0.0.0.0",
+    "metrics_interval_ms": 1000
+  }
+}

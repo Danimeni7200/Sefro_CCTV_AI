@@ -1,0 +1,30 @@
+CMakeLists.txt (modify)
+
+cmake_minimum_required(VERSION 3.10)
+project(LocalCpp)
+
+enable_testing()
+
+add_subdirectory(tests)
+
+set(CMAKE_CXX_STANDARD 11)
+
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+add_library(local_cpp src/local_cpp.cpp)
+
+target_link_libraries(local_cpp gtest gtest_main)
+
+CMakeLists.txt (tests)
+
+cmake_minimum_required(VERSION 3.10)
+project(LocalCppTests)
+
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+add_executable(basic_test basic_test.cpp)
+
+target_link_libraries(basic_test gtest gtest_main local_cpp)
+
+add_test(NAME BasicTest COMMAND basic_test)

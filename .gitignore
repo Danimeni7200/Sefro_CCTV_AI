@@ -1,0 +1,16 @@
+__pycache__/
+.venv/
+env/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+node_modules/
+dist/
+build/
+.next/
+.env
+.env.local
+packages/ai_service/logs/
+
+

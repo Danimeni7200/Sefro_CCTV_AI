@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سامانه تشخیص پلاک</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fas fa-car"></i>
+          <span>پلاک</span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-page="dashboard">
+          <i class="fas fa-chart-line"></i>
+          <span>داشبورد</span>
+        </a>
+        <a href="#" class="nav-item" data-page="results">
+          <i class="fas fa-list"></i>
+          <span>نتایج</span>
+        </a>
+        <a href="#" class="nav-item" data-page="settings">
+          <i class="fas fa-cog"></i>
+          <span>تنظیمات</span>
+        </a>
+        <a href="#" class="nav-item" data-page="discover">
+          <i class="fas fa-search"></i>
+          <span>کشف دوربین</span>
+        </a>
+        <a href="#" class="nav-item" data-page="livestream">
+          <i class="fas fa-eye"></i>
+          <span>👁️ مشاهده زنده دوربین‌ها</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="status-indicator">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-text" id="statusText">اتصال</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="header-left">
+          <h1 id="pageTitle">داشبورد</h1>
+          <p class="header-subtitle" id="pageSubtitle">خوش آمدید به سامانه تشخیص پلاک</p>
+        </div>
+        <div class="header-right">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="جستجو..." id="searchInput">
+          </div>
+          <button class="btn-icon" id="refreshBtn" title="بروزرسانی">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+          <button class="btn-icon" id="notificationBtn" title="اطلاعات">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-wrapper">
+        <!-- Dashboard Page -->
+        <div class="page" id="dashboard-page" style="display: block;">
+          <div class="dashboard-grid">
+            <!-- Stats Cards -->
+            <div class="stats-container">
+              <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <i class="fas fa-car"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">کل پلاک‌ها</p>
+                  <h3 class="stat-value" id="totalPlates">0</h3>
+                  <p class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> امروز
+                  </p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                  <i class="fas fa-video"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">دوربین‌های فعال</p>
+                  <h3 class="stat-value" id="activeCameras">0</h3>
+                  <p class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> آنلاین
+                  </p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">دقت تشخیص</p>
+                  <h3 class="stat-value" id="accuracy">0%</h3>
+                  <p class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> بهتر
+                  </p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">سرعت پردازش</p>
+                  <h3 class="stat-value" id="processingSpeed">0ms</h3>
+                  <p class="stat-change positive">
+                    <i class="fas fa-arrow-down"></i> سریع‌تر
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+              <div class="chart-card">
+                <div class="chart-header">
+                  <h3>تشخیص‌های امروز</h3>
+                  <div class="chart-controls">
+                    <button class="chart-btn active">روز</button>
+                    <button class="chart-btn">هفته</button>
+                    <button class="chart-btn">ماه</button>
+                  </div>
+                </div>
+                <div class="chart-placeholder" id="detectionChart">
+                  <canvas id="detectionCanvas"></canvas>
+                </div>
+              </div>
+
+              <div class="chart-card">
+                <div class="chart-header">
+                  <h3>توزیع دوربین‌ها</h3>
+                </div>
+                <div class="chart-placeholder" id="cameraChart">
+                  <canvas id="cameraCanvas"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Results -->
+            <div class="recent-results">
+              <div class="section-header">
+                <h3>آخرین نتایج</h3>
+                <a href="#" class="view-all">مشاهده همه</a>
+              </div>
+              <div class="results-list" id="recentResultsList">
+                <!-- Results will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Page -->
+        <div class="page" id="results-page">
+          <div class="results-container">
+            <div class="results-header">
+              <div class="filter-group">
+                <input type="text" placeholder="جستجو پلاک..." class="filter-input" id="plateSearch">
+                <select class="filter-select" id="cameraFilter">
+                  <option value="">همه دوربین‌ها</option>
+                </select>
+                <input type="date" class="filter-input" id="dateFilter">
+              </div>
+              <button class="btn btn-primary" id="exportBtn">
+                <i class="fas fa-download"></i> دانلود
+              </button>
+            </div>
+
+            <div class="table-container">
+              <table class="results-table">
+                <thead>
+                  <tr>
+                    <th>زمان</th>
+                    <th>دوربین</th>
+                    <th>پلاک</th>
+                    <th>اطمینان</th>
+                    <th>موقعیت</th>
+                    <th>عملیات</th>
+                  </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                  <!-- Results will be populated here -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pagination">
+              <button class="pagination-btn" id="prevBtn">قبلی</button>
+              <div class="pagination-info" id="paginationInfo">صفحه 1</div>
+              <button class="pagination-btn" id="nextBtn">بعدی</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page" id="settings-page">
+          <div class="settings-container">
+            <div class="settings-section">
+              <h3 class="section-title">تنظیمات سرویس</h3>
+              <div class="settings-group">
+                <label class="setting-label">آدرس سرویس هوش مصنوعی</label>
+                <div class="input-group">
+                  <input type="text" id="aiHostInput" class="form-input" placeholder="http://127.0.0.1:8000">
+                  <button class="btn btn-secondary" id="testConnectionBtn">
+                    <i class="fas fa-plug"></i> تست اتصال
+                  </button>
+                </div>
+                <small class="help-text">آدرس سرویس FastAPI برای تشخیص پلاک</small>
+              </div>
+
+              <div class="settings-group">
+                <label class="setting-label">بازه‌ی بروزرسانی (ثانیه)</label>
+                <input type="number" id="refreshIntervalInput" class="form-input" min="1" max="60" value="3">
+                <small class="help-text">هر چند ثانیه نتایج جدید بررسی شود</small>
+              </div>
+
+              <div class="settings-group">
+                <label class="setting-label">تعداد نتایج نمایش‌داده شده</label>
+                <input type="number" id="resultsLimitInput" class="form-input" min="10" max="100" value="50">
+                <small class="help-text">حداکثر تعداد نتایج در هر بار بارگذاری</small>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3 class="section-title">تنظیمات نمایش</h3>
+              <div class="settings-group">
+                <label class="setting-label">تم</label>
+                <div class="theme-selector">
+                  <button class="theme-btn active" data-theme="dark">
+                    <i class="fas fa-moon"></i> تاریک
+                  </button>
+                  <button class="theme-btn" data-theme="light">
+                    <i class="fas fa-sun"></i> روشن
+                  </button>
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <label class="setting-label">زبان</label>
+                <select class="form-input" id="languageSelect">
+                  <option value="fa">فارسی</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3 class="section-title">درباره</h3>
+              <div class="about-info">
+                <p><strong>نام برنامه:</strong>سامانه تشخیص پلاک فرابک</p>
+                <p><strong>نسخه:</strong> 1.0.0</p>
+                <p><strong>sefro:</strong> تیم توسعه</p>
+              </div>
+            </div>
+
+            <div class="settings-actions">
+              <button class="btn btn-primary" id="saveSettingsBtn">
+                <i class="fas fa-save"></i> ذخیره تنظیمات
+              </button>
+              <button class="btn btn-secondary" id="resetSettingsBtn">
+                <i class="fas fa-undo"></i> بازنشانی
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Discover Page -->
+        <div class="page" id="discover-page">
+          <div class="discover-container">
+            <div class="discover-card">
+              <div class="discover-header">
+                <h2>کشف خودکار دوربین</h2>
+                <p>اطلاعات دوربین را وارد کنید تا آدرس RTSP آن کشف شود</p>
+              </div>
+
+              <form class="discover-form" id="discoverForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>آدرس IP دوربین</label>
+                    <input type="text" id="discoverIp" class="form-input" placeholder="192.168.1.100" required>
+                  </div>
+                  <div class="form-group">
+                    <label>برند دوربین</label>
+                    <select id="discoverBrand" class="form-input">
+                      <option value="">انتخاب برند</option>
+                      <option value="hikvision">Hikvision</option>
+                      <option value="dahua">Dahua</option>
+                      <option value="reolink">Reolink</option>
+                      <option value="axis">Axis</option>
+                      <option value="generic">عمومی</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>نام کاربری</label>
+                    <input type="text" id="discoverUser" class="form-input" placeholder="admin" required>
+                  </div>
+                  <div class="form-group">
+                    <label>رمز عبور</label>
+                    <input type="password" id="discoverPass" class="form-input" placeholder="••••••••" required>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large" id="discoverBtn">
+                  <i class="fas fa-search"></i> شروع کشف
+                </button>
+              </form>
+
+              <!-- Help instructions in Persian -->
+              <div class="discover-help">
+                <h3>راهنمای استفاده از کشف دوربین</h3>
+                <ul class="help-steps">
+                  <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>آدرس IP دوربین خود را وارد کنید (مثال: 192.168.1.100)</span>
+                  </li>
+                  <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>برند دوربین خود را انتخاب کنید (در صورت عدم اطمینان از گزینه "عمومی" استفاده کنید)</span>
+                  </li>
+                  <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>نام کاربری و رمز عبور دوربین را وارد کنید (معمولاً admin و رمز عبور پیش‌فرض)</span>
+                  </li>
+                  <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>روی دکمه "شروع کشف" کلیک کنید</span>
+                  </li>
+                  <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>پس از کشف موفق، دوربین به صورت خودکار به بخش "مشاهده زنده دوربین‌ها" اضافه می‌شود</span>
+                  </li>
+                  <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>در بخش "مشاهده زنده" روی "شروع جریان" کلیک کنید تا تصویر زنده نمایش داده شود</span>
+                  </li>
+                </ul>
+                <div class="help-note">
+                  <i class="fas fa-info-circle"></i>
+                  <span><strong>نکته:</strong> اطمینان حاصل کنید که دوربین شما روشن است و به شبکه متصل می‌باشد</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Live Stream Page -->
+        <div class="page" id="livestream-page">
+          <div class="livestream-container">
+            <div class="livestream-header">
+              <h2>👁️ مشاهده زنده دوربین‌ها</h2>
+              <p>مشاهده جریان زنده دوربین‌های کشف شده</p>
+            </div>
+
+            <div class="livestream-content" id="livestreamContent">
+              <div class="empty-state" id="livestreamEmptyState">
+                <i class="fas fa-video-slash"></i>
+                <h3>دوربینی برای نمایش وجود ندارد</h3>
+                <p>ابتدا از بخش "کشف دوربین" دوربین‌های خود را کشف کنید</p>
+                <button class="btn btn-primary" id="goToDiscoverBtn">
+                  <i class="fas fa-search"></i> رفتن به کشف دوربین
+                </button>
+              </div>
+              
+              <div class="livestream-grid" id="livestreamGrid" style="display: none;">
+                <!-- Live streams will be added here dynamically -->
+                <div class="stream-video-container">
+                  <div class="stream-video-wrapper">
+                    <!-- Canvas element for live stream -->
+                    <canvas id="stream-${camera.id}" class="live-stream-canvas" style="display: none; width: 100%; height: auto; border-radius: 8px;"></canvas>
+                    <div id="stream-placeholder-${camera.id}" class="stream-placeholder">
+                      <i class="fas fa-video"></i>
+                      <p>در حال بارگذاری جریان زنده...</p>
+                      <small>${camera.name}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Modal for Details -->
+  <div class="modal" id="detailsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>جزئیات نتیجه</h2>
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Details will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

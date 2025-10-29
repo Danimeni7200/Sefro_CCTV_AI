@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Dani\Desktop\pelak\Sefro_CCTV_AI-main\packages\local_cpp\src\discovery_service.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Dani\Desktop\pelak\Sefro_CCTV_AI-main\packages\local_cpp\src\health_server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Dani\Desktop\pelak\Sefro_CCTV_AI-main\packages\local_cpp\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{860DCC01-46CB-304D-8901-5CB56F9E49E0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

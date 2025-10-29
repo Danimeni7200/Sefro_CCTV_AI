@@ -1,0 +1,6 @@
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+Content-Length: 53
+Connection: close
+
+{"error":"Stream not found","available_streams":[""]}

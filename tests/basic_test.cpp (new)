@@ -1,0 +1,6 @@
+const { TestSuite, TestCase } = require('gtest');
+
+TEST(SampleTest, BasicAssertions) {
+    EXPECT_EQ(1, 1);
+    EXPECT_TRUE(true);
+}

@@ -1,0 +1,94 @@
+================================================================================
+                    QUICK REBUILD & RUN GUIDE
+================================================================================
+
+STEP 1: Open PowerShell or CMD
+  - Press Win + X, select "Windows PowerShell" or "Terminal"
+  - OR Press Win + R, type "cmd", press Enter
+
+STEP 2: Navigate to project
+  cd c:\Users\Dani\Desktop\license_plate\packages\local_cpp
+
+STEP 3: Run rebuild script
+
+  OPTION A - PowerShell (Recommended):
+    .\rebuild.ps1
+
+  OPTION B - Command Prompt:
+    rebuild.cmd
+
+  OPTION C - Manual (PowerShell):
+    cd build_full
+    cmake ..
+    cmake --build . --config Release
+
+STEP 4: Wait for build to complete (2-5 minutes)
+  Look for: "Build successful!" or "[100%] Built target local_cpp_client"
+
+STEP 5: Run the client
+  .\Release\local_cpp_client.exe
+
+STEP 6: Check for success in console output
+  ✅ SUCCESS - You should see:
+    [StreamReader] Successfully opened stream with backend: FFMPEG
+    [StreamReader] Stream properties - FPS: 30, Resolution: 1920x1080
+    Stats - FPS: 15.00, Processed: 15, Dropped: 0
+
+  ❌ FAILURE - You might see:
+    Failed to open stream with any backend. Diagnostics:
+
+================================================================================
+                         VERIFICATION (Optional)
+================================================================================
+
+In another PowerShell/CMD window, run:
+
+  curl http://127.0.0.1:8085/status
+
+Expected response:
+  "stream_connected": true
+  "fps": 15.0
+
+================================================================================
+                         TROUBLESHOOTING
+================================================================================
+
+Problem: "CMake not found"
+  Solution: Install CMake from https://cmake.org/download/
+
+Problem: "cannot be loaded because running scripts is disabled"
+  Solution: Run this first:
+    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+
+Problem: Still 0 FPS after rebuild
+  Solution: Verify config.json has correct URL:
+    Get-Content packages\local_cpp\config.json | Select-String "url"
+    Should show: h264Preview_01_main
+
+Problem: "Connection refused" or "Network unreachable"
+  Solution: Check camera is reachable:
+    ping 192.168.4.252
+
+================================================================================
+                         WHAT WAS FIXED
+================================================================================
+
+File: packages/local_cpp/config.json
+
+Before: "url": "rtsp://admin:test1234@192.168.4.252:554/h264"
+After:  "url": "rtsp://admin:test1234@192.168.4.252:554/h264Preview_01_main"
+
+Why: Reolink cameras require the specific stream path /h264Preview_01_main
+
+================================================================================
+                         DOCUMENTATION
+================================================================================
+
+For more details, see:
+  - RUN_REBUILD.md - Detailed rebuild instructions
+  - FIX_APPLIED.md - What was changed and why
+  - QUICK_START_RTSP.md - Quick troubleshooting
+  - RTSP_TROUBLESHOOTING.md - Comprehensive troubleshooting
+  - STREAM_READER_DIAGNOSTICS.md - Technical reference
+
+================================================================================

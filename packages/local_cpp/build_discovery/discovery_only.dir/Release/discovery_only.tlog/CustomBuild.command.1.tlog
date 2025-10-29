@@ -1,0 +1,10 @@
+^C:\USERS\DANI\DESKTOP\PELAK\SEFRO_CCTV_AI-MAIN\PACKAGES\LOCAL_CPP\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp -BC:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp/build_discovery --check-stamp-file C:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp/build_discovery/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

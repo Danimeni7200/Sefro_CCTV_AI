@@ -1,0 +1,7 @@
+C:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp/temp_build/CMakeFiles/cpp_client.dir
+C:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp/temp_build/CMakeFiles/simple_cpp_client.dir
+C:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp/temp_build/CMakeFiles/discovery_test.dir
+C:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp/temp_build/CMakeFiles/discovery_service.dir
+C:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp/temp_build/CMakeFiles/discovery_only.dir
+C:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp/temp_build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Dani/Desktop/pelak/Sefro_CCTV_AI-main/packages/local_cpp/temp_build/CMakeFiles/ZERO_CHECK.dir
