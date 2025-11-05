@@ -1,0 +1,14 @@
+{
+  "name": "lpr-electron",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^29.4.0",
+    "node-fetch": "^2.6.9"
+  }
+}

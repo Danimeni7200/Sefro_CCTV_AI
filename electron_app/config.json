@@ -1,0 +1,21 @@
+{
+  "ai_service": {
+    "host": "http://127.0.0.1:8091",
+    "poll_interval_ms": 3000,
+    "max_results": 50
+  },
+  "cloud_api": {
+    "host": "http://127.0.0.1:9000",
+    "enabled": false
+  },
+  "ui": {
+    "theme": "light",
+    "auto_refresh": true,
+    "show_confidence": true,
+    "show_bbox": true
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/electron.log"
+  }
+}
