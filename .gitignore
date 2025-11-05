@@ -43,3 +43,14 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Model files
+*.pt
+*.pth
+*.weights
+*.onnx
+
+# Large files
+*.zip
+*.tar
+*.gz
